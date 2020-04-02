@@ -5,14 +5,14 @@ import javax.swing.text.*;
 import javax.swing.border.*;
 
 public class SwingComponentDemo3{
-    JFrame frame = new JFrame("通讯录");
+    JFrame frame = new JFrame("Address book");
 
-    JLabel labelT = new JLabel("在这里输入姓名和E-mail地址",JLabel.LEFT);
-    JLabel labelL = new JLabel("姓(L)");  //标签
-    JLabel labelF = new JLabel("名(F)");
-    JLabel labelI = new JLabel("姓名(I)");
-    JLabel labelN = new JLabel("昵称(N)");
-    JLabel labelM = new JLabel("E-mail地址");
+    JLabel labelT = new JLabel("Please input your name and E-mail address",JLabel.LEFT);
+    JLabel labelL = new JLabel("Last name(L)");  //标签
+    JLabel labelF = new JLabel("First name(F)");
+    JLabel labelI = new JLabel("Name(I)");
+    JLabel labelN = new JLabel("Nickname(N)");
+    JLabel labelM = new JLabel("E-mail address");
 
     JComboBox jcbLF;                          //组合框,存放姓名
 
