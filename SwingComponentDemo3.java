@@ -2,36 +2,32 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.text.*;
-
-import sun.awt.AWTAccessor.ContainerAccessor;
-import sun.awt.geom.AreaOp.AddOp;
-
 import javax.swing.border.*;
 
 public class SwingComponentDemo3{
     JFrame frame = new JFrame("通讯录");
 
     JLabel labelT = new JLabel("在这里输入姓名和E-mail地址",JLabel.LEFT);
-    JLabel labelL = new JLabel("姓(L)");
+    JLabel labelL = new JLabel("姓(L)");  //标签
     JLabel labelF = new JLabel("名(F)");
     JLabel labelI = new JLabel("姓名(I)");
     JLabel labelN = new JLabel("昵称(N)");
     JLabel labelM = new JLabel("E-mail地址");
 
-    JComboBox jcbLF;
+    JComboBox jcbLF;                          //组合框,存放姓名
 
-    JTextField textL = new JTextField("", 10);
+    JTextField textL = new JTextField("", 10);//输入框,单行文本域
     JTextField textF = new JTextField("", 10);
     JTextField textN = new JTextField("", 10);
     JTextField textM = new JTextField("", 30);
 
-    JButton buttonA = new JButton("增加(A)");
+    JButton buttonA = new JButton("增加(A)");//功能按钮
     JButton buttonE = new JButton("编辑(E)");
     JButton buttonR = new JButton("删除(R)");
-    JButton buttonQ = new JButton("确定");
+    JButton buttonQ = new JButton("确定");//页面按钮
     JButton buttonC = new JButton("取消");
 
-    JTextArea textAll = new JTextArea(5, 30);
+    JTextArea textAll = new JTextArea(5, 30);//用于显示结果的文本区
     
     public static void main(String args[]){
         SwingComponentDemo3 testCom = new SwingComponentDemo3();
@@ -39,7 +35,7 @@ public class SwingComponentDemo3{
     }
 
     public void go(){
-        JPanel jPane1 = new JPanel();
+        JPanel jPane1 = new JPanel();//定义面板
         JPanel jPane2 = new JPanel();
         JPanel jPane3 = new JPanel();
         JPanel jPane4 = new JPanel();
@@ -47,22 +43,23 @@ public class SwingComponentDemo3{
         JPanel jPane6 = new JPanel();
         JPanel jPane234 = new JPanel();
 
-        JPanel jPanea = new JPanel();
-        JPanel jPaneb = new JPanel();
-        JPanel jPaneall = new JPanel();
+        JPanel jPanea = new JPanel();//用来放置上述面板
+        JPanel jPaneb = new JPanel();//用来放置页面按钮
+        JPanel jPaneall = new JPanel();//放置所有组件
 
         JPanel jpanea = new JPanel();
         JPanel jpaneb = new JPanel();
         JPanel jpaneall = new JPanel();
 
         jPane1.setLayout(new BorderLayout());
-        jPane1.add(labelT, BorderLayout.WEST);
+        jPane1.add(labelT, BorderLayout.WEST);//第一个面板中放主题
         Border etched = BorderFactory.createEtchedBorder();
         Border border = BorderFactory.createTitledBorder(etched);
 
-        jcbLF = new JComboBox();
-        jcbLF.setEditable(true);
+        jcbLF = new JComboBox();//设置组合框
+        jcbLF.setEditable(true);//可编辑的
 
+        //第2, 3, 4个面板中放输入框
         jPane2.setLayout(new FlowLayout(FlowLayout.LEFT));
         jPane3.setLayout(new FlowLayout(FlowLayout.LEFT));
         jPane4.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -75,24 +72,24 @@ public class SwingComponentDemo3{
         JScrollPane jp = new JScrollPane(textAll);
         jPane5.add(jp);
         jPane6.setLayout(new GridLayout(0, 1));
-        jPane6.add(buttonA);
+        jPane6.add(buttonA);//面板中放功能按钮
         jPane6.add(buttonE);
         jPane6.add(buttonR);
 
-        jpanea.add(jPane5);
+        jpanea.add(jPane5);//文本区和按钮
         jpanea.add(jPane6);
         border = BorderFactory.createTitledBorder(etched, "");
-        jpanea.setBorder(border);
+        jpanea.setBorder(border);//设置边框
 
         jpaneb.setLayout(new FlowLayout(FlowLayout.RIGHT));
-        jpaneb.add(buttonQ);
+        jpaneb.add(buttonQ);//面板中放页面按钮
         jpaneb.add(buttonC);
 
         jPane234.setLayout(new BorderLayout());
         jPane234.add(jPane2, BorderLayout.NORTH);
         jPane234.add(jPane3, BorderLayout.CENTER);
         jPane234.add(jPane4, BorderLayout.SOUTH);
-        jPaneall.setLayout(new BoxLayout(jpaneall, BoxLayout.Y_AXIS));
+        jPaneall.setLayout(new BoxLayout(jPaneall, BoxLayout.Y_AXIS));
         jPaneall.add(jPane1);
         jPaneall.add(jPane234);
         jPaneall.add(jPanea);
@@ -100,7 +97,7 @@ public class SwingComponentDemo3{
 
         Container contpane = frame.getContentPane();
         contpane.setLayout(new FlowLayout());
-        contpane.add(jpaneall);
+        contpane.add(jPaneall);
         border = BorderFactory.createTitledBorder(etched, "NameCards");
         jPaneall.setBorder(border);
 
