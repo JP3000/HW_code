@@ -17,7 +17,8 @@ public class PersonalTab{
     JLabel labelC = new JLabel("ICQ");
     JLabel labelH = new JLabel("Homepage(H)");
 
-    JComboBox jcbLF;                          //组合框,存放姓名
+    JComboBox jcbSEX;                          //组合框,存放性别
+    JComboBox jcbBRI;                          //组合框,存放生日
 
     JTextField textM = new JTextField("", 10);//输入框,单行文本域
     JTextField textS = new JTextField("", 10);
@@ -34,7 +35,7 @@ public class PersonalTab{
     JButton buttonC = new JButton("Cancel");
 
     //JTextArea textAll = new JTextArea(5, 30);//用于显示结果的文本区
-    
+
     public static void main(String args[]){
         PersonalTab testCom = new PersonalTab();
         testCom.go();
@@ -44,10 +45,11 @@ public class PersonalTab{
         JPanel jPane1 = new JPanel();//定义面板
         JPanel jPane2 = new JPanel();
         JPanel jPane3 = new JPanel();
-        JPanel jPane4 = new JPanel();
+        JPanel jPaneF = new JPanel();
         JPanel jPane5 = new JPanel();
         JPanel jPane6 = new JPanel();
         JPanel jPaneA = new JPanel();
+        JPanel jPaneR = new JPanel();
 
         //JPanel jPanea = new JPanel();//用来放置上述面板
         JPanel jPaneb = new JPanel();//用来放置页面按钮
@@ -58,25 +60,36 @@ public class PersonalTab{
         Border etched = BorderFactory.createEtchedBorder();
         Border border = BorderFactory.createTitledBorder(etched);
 
-        jcbLF = new JComboBox();//设置组合框
-        jcbLF.setEditable(true);//可编辑的
+        jcbSEX = new JComboBox();//设置组合框
+        jcbSEX.setEditable(true);//可编辑的
+        jcbBRI = new JComboBox();//设置组合框
+        jcbBRI.setEditable(true);//可编辑的
 
         //第2, 3, 4个面板中放输入框
         jPane2.setLayout(new FlowLayout(FlowLayout.LEFT));
         jPane3.setLayout(new FlowLayout(FlowLayout.LEFT));
-        jPane4.setLayout(new FlowLayout(FlowLayout.LEFT));
+        jPaneF.setLayout(new FlowLayout(FlowLayout.LEFT));
         jPane5.setLayout(new FlowLayout(FlowLayout.LEFT));
 
+        JTextArea jta = new JTextArea(4, 10);
+        JScrollPane jsp = new JScrollPane(jta);
+        //jsp.setBounds(13, 10, 10, 20);
+        jsp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
         jPane2.add(labelM); jPane2.add(textM);
-        jPane2.add(labelS); jPane2.add(textS);
+        jPane2.add(labelS); jPane2.add(jcbSEX);
 
         jPane3.add(labelP); jPane3.add(textP);
-        jPane3.add(labelB); jPane3.add(jcbLF);
+        jPane3.add(labelB); jPane3.add(jcbBRI);
 
-        jPane4.add(labelQ); jPane4.add(textQ);
-        jPane4.add(labelI); jPane4.add(textI);
+        jPaneF.setLayout(new GridLayout(0, 1));
+        jPaneF.add(labelQ); jPaneF.add(textQ);
+        jPaneF.add(labelC); jPaneF.add(textC);
 
-        jPane5.add(labelC); jPane5.add(textC);
+        jPaneR.add(labelI); jPaneR.add(jsp);
+
+        jPane5.setLayout(new GridLayout(1, 0));
+        jPane5.add(jPaneF); jPane5.add(jPaneR);
 
         jPane6.add(labelH); jPane6.add(textH);
 
@@ -99,21 +112,21 @@ public class PersonalTab{
         // jPaneA.setLayout(new BorderLayout());
         // jPaneA.add(jPane2, BorderLayout.NORTH);
         // jPaneA.add(jPane3, BorderLayout.CENTER);
-        // jPaneA.add(jPane4, BorderLayout.CENTER);
+        // jPaneA.add(jPaneF, BorderLayout.CENTER);
         // jPaneA.add(jPane5, BorderLayout.SOUTH);
 
-        jPaneA.setLayout(new GridLayout(5, 1));
+        jPaneA.setLayout(new GridLayout(5, 2));
         jPaneA.add(jPane2);
         jPaneA.add(jPane3);
-        jPaneA.add(jPane4);
+        //jPaneA.add(jPaneF);
         jPaneA.add(jPane5);
         jPaneA.add(jPane6);
 
-        jPaneall.setLayout(new GridLayout(2, 1));
+        jPaneall.setLayout(new BoxLayout(jPaneall, BoxLayout.Y_AXIS));
         jPaneall.add(jPane1);
         jPaneall.add(jPaneA);
         //jPaneall.add(jPanea);
-        //jPaneall.add(jPaneb);
+        jPaneall.add(jPaneb);
 
         Container contpane = frame.getContentPane();
         contpane.setLayout(new FlowLayout());

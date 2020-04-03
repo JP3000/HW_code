@@ -47,10 +47,6 @@ public class SwingComponentDemo3{
         JPanel jPaneb = new JPanel();//用来放置页面按钮
         JPanel jPaneall = new JPanel();//放置所有组件
 
-        JPanel jpanea = new JPanel();
-        JPanel jpaneb = new JPanel();
-        JPanel jpaneall = new JPanel();
-
         jPane1.setLayout(new BorderLayout());
         jPane1.add(labelT, BorderLayout.WEST);//第一个面板中放主题
         Border etched = BorderFactory.createEtchedBorder();
@@ -76,14 +72,14 @@ public class SwingComponentDemo3{
         jPane6.add(buttonE);
         jPane6.add(buttonR);
 
-        jpanea.add(jPane5);//文本区和按钮
-        jpanea.add(jPane6);
+        jPanea.add(jPane5);//文本区和按钮
+        jPanea.add(jPane6);
         border = BorderFactory.createTitledBorder(etched, "");
-        jpanea.setBorder(border);//设置边框
+        jPanea.setBorder(border);//设置边框
 
-        jpaneb.setLayout(new FlowLayout(FlowLayout.RIGHT));
-        jpaneb.add(buttonQ);//面板中放页面按钮
-        jpaneb.add(buttonC);
+        jPaneb.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        jPaneb.add(buttonQ);//面板中放页面按钮
+        jPaneb.add(buttonC);
 
         jPane234.setLayout(new BorderLayout());
         jPane234.add(jPane2, BorderLayout.NORTH);
