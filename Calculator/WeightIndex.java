@@ -70,9 +70,9 @@ public class WeightIndex extends JFrame {
         contentPane.setLayout(new BorderLayout(0, 0));
         setContentPane(contentPane);
         //标题，主容器北
-        titleLabel = new JLabel("身高体重指数计算器");
-        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        contentPane.add(titleLabel, BorderLayout.NORTH);
+        //titleLabel = new JLabel("身高体重指数计算器");
+        //titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        //contentPane.add(titleLabel, BorderLayout.NORTH);
         //存放选项的panel，主容器中
         contentPanel = new JPanel();
         contentPanel.setLayout(new BorderLayout());
@@ -88,14 +88,14 @@ public class WeightIndex extends JFrame {
         contentPanel.add(sexPanel, BorderLayout.NORTH);
         ChinaRadio = new JRadioButton("中国标准");
         ChinaRadio.setSelected(true);
-        AsiaRadio = new JRadioButton("亚洲标准");
-        WHORadio = new JRadioButton("WHO（世界卫生组织）标准");
+        //AsiaRadio = new JRadioButton("亚洲标准");
+        //WHORadio = new JRadioButton("WHO（世界卫生组织）标准");
         bg.add(ChinaRadio);
-        bg.add(AsiaRadio);
-        bg.add(WHORadio);
+        //bg.add(AsiaRadio);
+        //bg.add(WHORadio);
         sexPanel.add(ChinaRadio);
-        sexPanel.add(AsiaRadio);
-        sexPanel.add(WHORadio);
+        //sexPanel.add(AsiaRadio);
+        //sexPanel.add(WHORadio);
         //存放身高体重的panel，选项中
         whPanel = new JPanel();
         whPanel.setLayout(new FlowLayout());
@@ -138,47 +138,49 @@ public class WeightIndex extends JFrame {
                 String out = "";
                 if (ChinaRadio.isSelected()) {
                     if (BMI < 18.5) {
-                        out = "偏瘦，瘦骨嶙峋的，多吃点吧！";
+                        out = "偏瘦";
                     } else if (BMI < 23.9) {
-                        out = "正常，棒棒哒！";
+                        out = "正常";
                     } else if (BMI < 28) {
-                        out = "偏胖，你胖你就运动减肥！";
+                        out = "偏胖";
                     } else if (BMI >= 28) {
-                        out = "肥胖，现在减肥来的及！";
+                        out = "肥胖";
                     } else {
                         out = "外星人派来的你哦，请重新输入！";
                     }
-                } else if (AsiaRadio.isSelected()) {
-                    if (BMI < 18.5) {
-                        out = "偏瘦，瘦骨嶙峋的，多吃点吧！";
-                    } else if (BMI < 22.9) {
-                        out = "正常，棒棒哒！";
-                    } else if (BMI < 24.9) {
-                        out = "偏胖，你胖你就运动减肥！";
-                    } else if (BMI < 30) {
-                        out = "肥胖，现在减肥来的及！";
-                    } else if (BMI >= 30) {
-                        out = "重度肥胖，不是一般人，赶紧减肥吧！";
-                    } else {
-                        out = "外星人派来的你哦，请重新输入！";
-                    }
-                } else {
-                    if (BMI < 18.5) {
-                        out = "偏瘦，瘦骨嶙峋的，多吃点吧！";
-                    } else if (BMI < 24.9) {
-                        out = "正常，棒棒哒！";
-                    } else if (BMI < 29.9) {
-                        out = "偏胖，你胖你就运动减肥！";
-                    } else if (BMI < 34.9) {
-                        out = "肥胖，现在减肥来的及！";
-                    } else if (BMI < 39.9) {
-                        out = "重度肥胖，不是一般人，赶紧减肥吧！";
-                    } else if (BMI >= 40) {
-                        out = "极重度肥胖,那可能得去医院看看咯！";
-                    } else {
-                        out = "外星人派来的你哦，请重新输入！";
-                    }
-                }
+                } 
+                // else if (AsiaRadio.isSelected()) {
+                //     if (BMI < 18.5) {
+                //         out = "偏瘦";
+                //     } else if (BMI < 22.9) {
+                //         out = "正常";
+                //     } else if (BMI < 24.9) {
+                //         out = "偏胖";
+                //     } else if (BMI < 30) {
+                //         out = "肥胖";
+                //     } else if (BMI >= 30) {
+                //         out = "重度肥胖";
+                //     } else {
+                //         out = "外星人派来的你哦，请重新输入！";
+                //     }
+                // } 
+                // else {
+                //     if (BMI < 18.5) {
+                //         out = "偏瘦";
+                //     } else if (BMI < 24.9) {
+                //         out = "正常";
+                //     } else if (BMI < 29.9) {
+                //         out = "偏胖";
+                //     } else if (BMI < 34.9) {
+                //         out = "肥胖";
+                //     } else if (BMI < 39.9) {
+                //         out = "重度肥胖";
+                //     } else if (BMI >= 40) {
+                //         out = "极重度肥胖";
+                //     } else {
+                //         out = "外星人派来的你哦，请重新输入！";
+                //     }
+                // }
  
                 consoleText.setText("你的指数为：" + df.format(BMI) + "，你的健康状况为：" + out);
             }
