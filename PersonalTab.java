@@ -84,16 +84,18 @@ public class PersonalTab{
         jPane3.add(labelP); jPane3.add(textP);
         jPane3.add(labelB); jPane3.add(jcbBRI);
 
-        jPaneF.setLayout(new GridLayout(2, 1));
+        jPaneF.setLayout(new GridLayout(1, 2));
         //jPaneF.setLayout(new FlowLayout(FlowLayout.CENTER));
         jPaneF.add(labelQ); jPaneF.add(textQ);
-        jPaneF.add(labelC); jPaneF.add(textC);
+        jPaneF.add(labelI); jPaneF.add(jsp);
+        
+        jPaneR.add(labelC); jPaneR.add(textC);
 
-        jPaneR.add(labelI); jPaneR.add(jsp);
+        //jPaneR.add(labelI); jPaneR.add(jsp);
 
-        jPane5.setLayout(new FlowLayout(FlowLayout.LEFT));
+        //jPane5.setLayout(new FlowLayout(FlowLayout.LEFT));
         //jPane5.setLayout(new GridLayout(1, 0));
-        jPane5.add(jPaneF); jPane5.add(jPaneR);
+        //jPane5.add(jPaneF); jPane5.add(jPaneR);
 
         jPane6.add(labelH); jPane6.add(textH);
 
@@ -119,12 +121,12 @@ public class PersonalTab{
         // jPaneA.add(jPaneF, BorderLayout.CENTER);
         // jPaneA.add(jPane5, BorderLayout.SOUTH);
 
-        jPaneA.setLayout(new GridLayout(4, 1));
+        jPaneA.setLayout(new GridLayout(5, 1));
         jPaneA.add(jPane2);
         jPaneA.add(jPane3);
-        //jPaneA.add(jPaneF);
-        //jPaneA.add(jPaneR);
-        jPaneA.add(jPane5);
+        jPaneA.add(jPaneF);
+        jPaneA.add(jPaneR);
+        //jPaneA.add(jPane5);
         jPaneA.add(jPane6);
 
         jPaneall.setLayout(new BoxLayout(jPaneall, BoxLayout.Y_AXIS));
