@@ -56,14 +56,14 @@ public class Main extends JFrame implements ActionListener{
         getContentPane().add(calckeysPanel);
 
         //表达式赋值为空
-        expression = "";
+        expression = "";// = s
     }
     
     
 
     @Override
+
     public void actionPerformed(ActionEvent e) {
-        // TODO Auto-generated method stub
         String action = e.getActionCommand();
 
         
