@@ -48,7 +48,9 @@ public class Calculator5 extends JFrame implements ActionListener{
 
     public String expression = "";
 
-    public String[] str_history;
+    public String[] str_history = new String[5];
+    int count_H = 0;
+    int count_equ = 0;
 
 	public Calculator5(){
 		JPanel bmi1 = new JPanel();
@@ -213,6 +215,17 @@ public class Calculator5 extends JFrame implements ActionListener{
 
         });
 
+        historyButton.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e)
+            {
+                count_H = count_H % 5;
+                String his_str = str_history[count_H];
+                text_history.setText(his_str);
+                count_H ++;
+                expression = "";
+            }
+        });
+
 	}
 	private String getResult (double bmi) {           //分析BMI值大小
     
@@ -237,10 +250,6 @@ public class Calculator5 extends JFrame implements ActionListener{
         //用户按下=
             handleCalc();
         }
-        else if (action.equals("history")){
-        //用户按下history
-            handlehis();
-        }
         else{
         //用户输入表达式
             handleExpression(action);
@@ -262,11 +271,9 @@ public class Calculator5 extends JFrame implements ActionListener{
     public void handleCalc(){
         String result = Calc(expression).toString();
         text_show.setText(result);
+        str_history[count_equ] = expression;
+        count_equ++;
         expression = "";
-    }
-
-    private void handlehis(){
-        text_history.setText(str_history[1] + "=" + str_history[2]);
     }
     //处理用户按下数字或运算符的事件
     private void handleExpression(String action){
