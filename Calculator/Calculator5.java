@@ -1,16 +1,18 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.beans.Expression;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.*;
-import java.awt.*;
 import java.text.DecimalFormat;
 import java.util.regex.*;
 import java.util.Stack; 
-public class Calculator2 extends JFrame implements ActionListener{
-    JFrame f=new JFrame("Calculator");
-	private JTextField text_show = new JTextField("0");
-
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+public class Calculator5 extends JFrame implements ActionListener{
+    JFrame f = new JFrame("Calculator");
+    private JTextField text_show = new JTextField("0");
+    private JTextField text_history = new JTextField(28);
 	//bmi
 	private static final long serialVersionUID = 1L;
     private JPanel whPanel;
@@ -31,34 +33,34 @@ public class Calculator2 extends JFrame implements ActionListener{
  
     DecimalFormat dformat = new DecimalFormat("#.00");
 
-	public JButton  submitButton,button_mark,button_CE,button_C,
+    public JButton  button_Left, button_Right,
+                    submitButton,historyButton,button_CE,button_C,
 	                button_7,button_8,button_9,button_divide,
 	                button_4,button_5,button_6,button_multiply,
 	                button_1,button_2,button_3,button_minus,
 	                button_0,button_dot,button_equal,button_plus;
 	public JPanel jpanel;
 	
-	// public int count_H = 0;
-	// public int count_equ = 0;
-	
     public char sign;
 	public double v1;
 	public double v2;
 	public boolean reop;
 
-    static Stack<Character> op = new Stack<>();
-    private String expression;
-	public Calculator2(){
+    public String expression = "";
+
+    public String[] str_history;
+
+	public Calculator5(){
 		JPanel bmi1 = new JPanel();
 		JPanel bmi2 = new JPanel();
-		JPanel bmi3 = new JPanel();
+		JPanel tool = new JPanel();
 
 		JPanel jpanel1 = new JPanel();
 		JPanel jpanel2 = new JPanel();
 		JPanel jpanel3 = new JPanel();
 		JPanel jpanel4 = new JPanel();
 		JPanel jpanel5 = new JPanel();
-		
+        
 		whPanel = new JPanel();
         whPanel.setLayout(new FlowLayout());
         heightLabel = new JLabel("身高（米/m）：");
@@ -70,13 +72,12 @@ public class Calculator2 extends JFrame implements ActionListener{
 
         whPanel.add(heightLabel); whPanel.add(heightText);
         whPanel.add(weightLabel); whPanel.add(weightText);
-        //结果
+        //bmi结果
         consolePanel = new JPanel();
         consolePanel.setLayout(new FlowLayout());
         consoleLabel = new JLabel("你的身体质量指数为：");
         consoleText = new JTextField(28);
         consoleText.setEditable(false);
-
         consolePanel.add(consoleLabel); consolePanel.add(consoleText);
 
         submitButton = new JButton("BMI计算");//计算改成等号( = )
@@ -84,11 +85,13 @@ public class Calculator2 extends JFrame implements ActionListener{
         //bmi主界面
 		bmi1.setLayout(new FlowLayout());
 		bmi2.setLayout(new FlowLayout());
-		bmi3.setLayout(new FlowLayout());
+        
         bmi1.add(whPanel,FlowLayout.LEFT);
         bmi2.add(consolePanel,FlowLayout.LEFT);
 		
-        submitButton = new JButton("BMI计算");button_mark=new JButton("%");
+        submitButton = new JButton("BMI计算");
+        historyButton = new JButton("history");
+        button_Left = new JButton("(");  button_Right = new JButton(")");
 		button_CE=new JButton("CE");    button_C=new JButton("C");
         button_7=new JButton("7");      button_8=new JButton("8");
         button_9=new JButton("9");      button_divide=new JButton("/");
@@ -98,9 +101,10 @@ public class Calculator2 extends JFrame implements ActionListener{
         button_3=new JButton("3");      button_minus=new JButton("-");
         button_0=new JButton("0");      button_dot=new JButton(".");
         button_equal=new JButton("=");  button_plus=new JButton("+");
-		
-		
-        button_mark.addActionListener(this);
+        
+        historyButton.addActionListener(this);
+        button_Left.addActionListener(this);
+        button_Right.addActionListener(this);
         button_CE.addActionListener(this);
         button_C.addActionListener(this);
         button_7.addActionListener(this);
@@ -119,12 +123,14 @@ public class Calculator2 extends JFrame implements ActionListener{
         button_dot.addActionListener(this);
         button_equal.addActionListener(this);
         button_plus.addActionListener(this);
-		
-        expression = "";
         
+        tool.setLayout(new GridLayout(1, 2));
+		tool.add(submitButton);
+		tool.add(historyButton);
+
 		jpanel1.setLayout(new GridLayout(1, 4));
-		jpanel1.add(submitButton);
-		jpanel1.add(button_mark);
+		jpanel1.add(button_Left);
+		jpanel1.add(button_Right);
 		jpanel1.add(button_CE);
 		jpanel1.add(button_C);
 		
@@ -150,23 +156,31 @@ public class Calculator2 extends JFrame implements ActionListener{
 		jpanel5.add(button_0);
 		jpanel5.add(button_dot);
 		jpanel5.add(button_equal);
-		jpanel5.add(button_plus);
-		
-		Container container = f.getContentPane();
-		container.setLayout(new GridLayout(8, 1));
-		container.add(text_show);
+        jpanel5.add(button_plus);
+        
         text_show.setEditable(false);
         text_show.setHorizontalAlignment(JTextField.RIGHT);
         text_show.setFont(text_show.getFont().deriveFont((float)(30)));
 
+        text_history.setEditable(false);
+        text_history.setHorizontalAlignment(JTextField.RIGHT);
+        text_history.setFont(text_history.getFont().deriveFont((float)(30)));
+
+        Container container = f.getContentPane();
+		container.setLayout(new GridLayout(10, 1));
+        container.add(text_show);
+        container.add(text_history);
+
 		container.add(bmi1);
 		container.add(bmi2);
+        container.add(tool);
 
 		container.add(jpanel1);
 		container.add(jpanel2);
 		container.add(jpanel3);
 		container.add(jpanel4);
-		container.add(jpanel5);
+        container.add(jpanel5);
+        
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.pack();
         f.setSize(600,300);
@@ -222,14 +236,16 @@ public class Calculator2 extends JFrame implements ActionListener{
         }else if (action.equals("=")){
         //用户按下=
             handleCalc();
-        }else if (action.equals(".")){
-            handledot();
+        }
+        else if (action.equals("history")){
+        //用户按下history
+            handlehis();
         }
         else{
         //用户输入表达式
             handleExpression(action);
         }
-    }
+    }     
     //处理按下C的事件
     private void handleC(){
         expression = "";
@@ -243,77 +259,133 @@ public class Calculator2 extends JFrame implements ActionListener{
     }
     
     //处理按下等号的事件
-    private void handleCalc(){
-        text_show.setText(Calculator2.calrp(Calculator2.getrp(expression)));
+    public void handleCalc(){
+        String result = Calc(expression).toString();
+        text_show.setText(result);
         expression = "";
     }
-    private void handledot(){
-        expression = expression + ".";
-		text_show.setText(expression);
-    }
 
+    private void handlehis(){
+        text_history.setText(str_history[1] + "=" + str_history[2]);
+    }
     //处理用户按下数字或运算符的事件
     private void handleExpression(String action){
-        expression += action;
+        expression = expression + action;
         text_show.setText(expression);
     }
-    //计算中缀表达
-    public static Float getv(char op, Float f1, Float f2){
-        if(op == '+') return f2 + f1;
-        else if(op == '-') return f2 - f1;
-        else if(op  == '*') return f2 * f1;
-        else if(op == '/') return f2 / f1;
-        else return Float.valueOf(-0);
-    }
 
-    public static String calrp(String rp){
-        Stack<Float> v = new Stack<>();
-        char[] arr = rp.toCharArray();
-        int len = arr.length;
-        for(int i = 0; i < len; i++){
-            Character ch = arr[i];
-            if(ch >= '0' && ch <= '9') 
-            v.push(Float.valueOf(ch - '0'));
-            else v.push( getv (ch, v.pop(), v.pop()) );
-        }
-        return v.pop().toString();
-    }
-
-    public static String getrp(String s){
-        char[] arr = s.toCharArray();
-        int len = arr.length;
-        String out = "";
-        for(int i = 0; i < len; i++){
-            char ch = arr[i];
-            if(ch == ' ') continue;
-            if(ch >= '0' && ch <= '9') {
-                out+=ch;
-                continue;
+    public static BigDecimal Calc(String str) {
+        // 对表达式进行预处理，并简单验证是否是正确的表达式
+        // 存放处理后的表达式
+        List<String> list = new ArrayList<>();
+        char[] arr = str.toCharArray();
+        // 存放数字临时变量
+        StringBuffer tmpStr = new StringBuffer();
+        for (char c : arr) {
+            // 如果是数字或小数点，添加到临时变量中
+            if (c >= '0' && c <= '9') {
+                tmpStr.append(c);
+            } else if (c == '.') {
+                if (tmpStr.indexOf(".") > 0) {
+                    throw new RuntimeException("非法字符");
+                }
+                tmpStr.append(c);
             }
-            if(ch == '(') op.push(ch);
-            if(ch == '+' || ch == '-'){
-                while(!op.empty() && (op.peek() != '(')) 
-                    out+=op.pop();
-                op.push(ch);
-                continue;
+            else if (c == '+' || c == '-' || c == '*' || c == '/' || c == '(' || c == ')') {
+                if (tmpStr.length() > 0) {
+                    list.add(tmpStr.toString());
+                    tmpStr.setLength(0);
+                }
+                list.add(c + "");
             }
-            if(ch == '*' || ch == '/'){
-                while(!op.empty() && (op.peek() == '*' || op.peek() == '/')) 
-                    out+=op.pop();
-                op.push(ch);
+            // 如果是空格，跳过
+            else if (c == ' ') {
                 continue;
-            }
-            if(ch == ')'){
-                while(!op.empty() && op.peek() != '(') 
-                    out += op.pop();
-                op.pop();
-                continue;
+            } else {
+                throw new RuntimeException("非法字符");
             }
         }
-        while(!op.empty()) out += op.pop();
-        return out;
-   }
+        if (tmpStr.length() > 0) {
+            list.add(tmpStr.toString());
+        }
+        List<String> strList = new ArrayList<>();
+        Stack<String> stack = new Stack<>();
+        String tmp;
+        for (String s : list) {
+            // 如果是左括号直接入栈
+            if (s.equals("(")) {
+                stack.push(s);
+            }
+            else if (s.equals(")")) {
+                while (!(tmp = stack.pop()).equals("(")) {
+                    strList.add(tmp);
+                }
+            }
+            else if (s.equals("*") || s.equals("/")) {
+                while (!stack.isEmpty()) {
+                    // 取出栈顶元素
+                    tmp = stack.peek();
+                    if (tmp.equals("*") || tmp.equals("/")) {
+                        stack.pop();
+                        strList.add(tmp);
+                    } else {
+                        break;
+                    }
+                }
+                stack.push(s);
+            } else if (s.equals("+") || s.equals("-")) {
+                while (!stack.isEmpty()) {
+                    // 取出栈顶元素
+                    tmp = stack.peek();
+                    if (!tmp.equals("(")) {
+                        stack.pop();
+                        strList.add(tmp);
+                    } else {
+                        break;
+                    }
+                }
+                stack.push(s);
+            }
+            // 如果是数字，直接添加到后缀表达式中
+            else {
+                strList.add(s);
+            }
+        }
+        // 最后依次出栈，放入后缀表达式中
+        while (!stack.isEmpty()) {
+            strList.add(stack.pop());
+        }
+        // 2.计算后缀表达式的值
+        Stack<BigDecimal> newStack = new Stack<>();
+        for (String s : strList) {
+            if (s.equals("+") || s.equals("-") || s.equals("*") || s.equals("/")) {
+                BigDecimal b1 = newStack.pop();
+                BigDecimal b2 = newStack.pop();
+                switch (s) {
+                case "+":
+                    newStack.push(b2.add(b1));
+                    break;
+                case "-":
+                    newStack.push(b2.subtract(b1));
+                    break;
+                case "*":
+                    newStack.push(b2.multiply(b1));
+                    break;
+                case "/":
+                    newStack.push(b2.divide(b1, 9, BigDecimal.ROUND_HALF_UP));
+                    break;
+                }
+            }
+            // 如果是数字，入栈
+            else {
+                newStack.push(new BigDecimal(s));
+            }
+        }
+        // 最后，栈中仅有一个元素，就是计算结果
+        return newStack.peek();
+    }
+
 	public static void main(String[] args) {
-        new Calculator2();
+        new Calculator5();
 	}
 }

@@ -7,12 +7,15 @@ import java.awt.*;
 import java.text.DecimalFormat;
 import java.util.regex.*;
 import java.util.Stack; 
-public class Calculator2 extends JFrame implements ActionListener{
+import java.util.LinkedList;
+import java.util.List;
+public class Calculator3 extends JFrame implements ActionListener{
     JFrame f=new JFrame("Calculator");
 	private JTextField text_show = new JTextField("0");
 
 	//bmi
 	private static final long serialVersionUID = 1L;
+    private JButton submitButton;
     private JPanel whPanel;
     private JLabel heightLabel;
     private JLabel weightLabel;
@@ -31,7 +34,7 @@ public class Calculator2 extends JFrame implements ActionListener{
  
     DecimalFormat dformat = new DecimalFormat("#.00");
 
-	public JButton  submitButton,button_mark,button_CE,button_C,
+	public JButton button_sqrt,button_mark,button_CE,button_C,
 	                button_7,button_8,button_9,button_divide,
 	                button_4,button_5,button_6,button_multiply,
 	                button_1,button_2,button_3,button_minus,
@@ -46,9 +49,17 @@ public class Calculator2 extends JFrame implements ActionListener{
 	public double v2;
 	public boolean reop;
 
-    static Stack<Character> op = new Stack<>();
-    private String expression;
-	public Calculator2(){
+
+    private ArrayList<String> list=new ArrayList<String>();
+    private ArrayList<String> his=new ArrayList<String>();//这个链表用来添加每一次得到的最终的结果
+    private ArrayList<String> arr = new ArrayList<String>();//把his里的一整串字符分割成单个字符，再连接
+    private String[] arrayStr = new String[] {};//储存单次的历史记录
+    private String out = "";
+    private String output = "";
+    private String[] str=new String[10];
+    private int begin;
+
+	public Calculator3(){
 		JPanel bmi1 = new JPanel();
 		JPanel bmi2 = new JPanel();
 		JPanel bmi3 = new JPanel();
@@ -87,19 +98,21 @@ public class Calculator2 extends JFrame implements ActionListener{
 		bmi3.setLayout(new FlowLayout());
         bmi1.add(whPanel,FlowLayout.LEFT);
         bmi2.add(consolePanel,FlowLayout.LEFT);
+        bmi3.add(submitButton,FlowLayout.LEFT);
 		
-        submitButton = new JButton("BMI计算");button_mark=new JButton("%");
+		button_re=new JButton("replay");button_mark=new JButton("%");
 		button_CE=new JButton("CE");    button_C=new JButton("C");
         button_7=new JButton("7");      button_8=new JButton("8");
-        button_9=new JButton("9");      button_divide=new JButton("/");
+        button_9=new JButton("9");      button_divide=new JButton("÷");
         button_4=new JButton("4");      button_5=new JButton("5");
-        button_6=new JButton("6");      button_multiply=new JButton("*");
+        button_6=new JButton("6");      button_multiply=new JButton("x");
         button_1=new JButton("1");      button_2=new JButton("2");
         button_3=new JButton("3");      button_minus=new JButton("-");
         button_0=new JButton("0");      button_dot=new JButton(".");
         button_equal=new JButton("=");  button_plus=new JButton("+");
 		
 		
+        button_re.addActionListener(this);
         button_mark.addActionListener(this);
         button_CE.addActionListener(this);
         button_C.addActionListener(this);
@@ -120,10 +133,10 @@ public class Calculator2 extends JFrame implements ActionListener{
         button_equal.addActionListener(this);
         button_plus.addActionListener(this);
 		
-        expression = "";
+
         
 		jpanel1.setLayout(new GridLayout(1, 4));
-		jpanel1.add(submitButton);
+		jpanel1.add(button_re);
 		jpanel1.add(button_mark);
 		jpanel1.add(button_CE);
 		jpanel1.add(button_C);
@@ -153,7 +166,7 @@ public class Calculator2 extends JFrame implements ActionListener{
 		jpanel5.add(button_plus);
 		
 		Container container = f.getContentPane();
-		container.setLayout(new GridLayout(8, 1));
+		container.setLayout(new GridLayout(9, 1));
 		container.add(text_show);
         text_show.setEditable(false);
         text_show.setHorizontalAlignment(JTextField.RIGHT);
@@ -161,6 +174,7 @@ public class Calculator2 extends JFrame implements ActionListener{
 
 		container.add(bmi1);
 		container.add(bmi2);
+		container.add(bmi3);
 
 		container.add(jpanel1);
 		container.add(jpanel2);
@@ -171,6 +185,8 @@ public class Calculator2 extends JFrame implements ActionListener{
         f.pack();
         f.setSize(600,300);
         f.setVisible(true);
+
+        expression = "";
 
         submitButton.addActionListener(new ActionListener() {       //设置事件监听器
 
@@ -211,108 +227,119 @@ public class Calculator2 extends JFrame implements ActionListener{
         }
     }
 
-    public void actionPerformed(ActionEvent ev) {
+    
+    public void actionPerformed(ActionEvent ev)
+    {
         String action = ev.getActionCommand();
-        if (action.equals("C")){
-        //用户按下C
-            handleC();
-        }else if (action.equals("CE")){
-        //用户按下退格
-            handleBackspace();
-        }else if (action.equals("=")){
-        //用户按下=
-            handleCalc();
-        }else if (action.equals(".")){
-            handledot();
+        /**
+         * 如果点“=”，计算整个表达式的结果，如果是错误表达式，在文本框输入“Input Error!”
+         */
+        if(action.equals("="))
+        {
+            try
+            {    
+                Function f = new Function();
+                double result = f.compute(out);
+                cl.text.setText(Double.toString(result));
+            } catch(Exception e) {
+                cl.text.setText("Input Error!");
+            }
+        } 
+        else if(action.equals("x")) {
+            /**
+             * 如果点击"×"，先把它转换为"*"
+             */
+            if(list.isEmpty())
+            {
+                arr.add("*");
+                output += "*";
+                out = output;
+                text_show.setText(output);
+            } else {
+                list.add("*");
+                output += "*";
+                out = output;
+                text_show.setText(output);
+            }
+        } 
+        else if(action.equals("÷")) {
+            /**
+             * 如果点击"÷"，把它转换为"/"
+             */
+            if(list.isEmpty())
+            {
+                arr.add("/");
+                output += "/";
+                out = output;
+                text_show.setText(output);
+            } else {
+                list.add("/");
+                output += "/";
+                out = output;
+                text_show.setText(output);
+            }
+        } 
+        else if(action.equals("CE")){
+            /**
+             * 如果点击"CE"，删除表达式里最后一个字符，每点一次删一个
+             */
+            if(list.isEmpty())
+            {
+                arr.remove(arr.size()-1);
+                output = "";
+                for(int i = 0; i < arr.size(); i++) output += arr.get(i);
+                 out = output;
+                 text_show.setText(output);
+            } else {
+                list.remove(list.size()-1);
+                String output = "";
+                for(int i = 0; i < list.size(); i++) output+=list.get(i);
+                 out = output;
+                 text_show.setText(output);
+            }
+        } 
+        else if(action.equals("C")){
+            /**
+             * 如果点击"AC"，删除list链表，再删除之前先把表达式保留到his的链表里
+             */
+            his.add(out);
+            list.clear();
+            output="";
+             text_show.setText(output);
+        } else if(action.equals("replay")){
+            /**
+             * 如果点击"Replay"，在文本框里显示上一条表达式
+             */
+            output=his.get(his.size()-1);
+            text_show.setText(output);
+            arr.clear();
+            //把上一条表达式分割成单个字符的字符数组
+            char[] a=output.toCharArray();
+            for(int i=0;i<a.length;i++)
+            {
+                arr.add(String.valueOf(a[i]));
+            }
+            his.remove(his.size()-1);
+        } else {
+            /**
+             * 其余按钮可以直接加入表达式
+             */
+            if(list.isEmpty())
+            {
+                arr.add(action);
+                output+= action;
+                out=output;
+                text_show.setText(output);
+            } else {
+                list.add(action);
+                output+=action;
+                out=output;
+                text_show.setText(output);
+            }
         }
-        else{
-        //用户输入表达式
-            handleExpression(action);
-        }
-    }
-    //处理按下C的事件
-    private void handleC(){
-        expression = "";
-        text_show.setText("");
     }
     
-    //处理按下退格的事件
-    private void handleBackspace(){
-        expression = expression.substring(0,expression.length() - 1);
-        text_show.setText(expression);
-    }
-    
-    //处理按下等号的事件
-    private void handleCalc(){
-        text_show.setText(Calculator2.calrp(Calculator2.getrp(expression)));
-        expression = "";
-    }
-    private void handledot(){
-        expression = expression + ".";
-		text_show.setText(expression);
-    }
 
-    //处理用户按下数字或运算符的事件
-    private void handleExpression(String action){
-        expression += action;
-        text_show.setText(expression);
-    }
-    //计算中缀表达
-    public static Float getv(char op, Float f1, Float f2){
-        if(op == '+') return f2 + f1;
-        else if(op == '-') return f2 - f1;
-        else if(op  == '*') return f2 * f1;
-        else if(op == '/') return f2 / f1;
-        else return Float.valueOf(-0);
-    }
-
-    public static String calrp(String rp){
-        Stack<Float> v = new Stack<>();
-        char[] arr = rp.toCharArray();
-        int len = arr.length;
-        for(int i = 0; i < len; i++){
-            Character ch = arr[i];
-            if(ch >= '0' && ch <= '9') 
-            v.push(Float.valueOf(ch - '0'));
-            else v.push( getv (ch, v.pop(), v.pop()) );
-        }
-        return v.pop().toString();
-    }
-
-    public static String getrp(String s){
-        char[] arr = s.toCharArray();
-        int len = arr.length;
-        String out = "";
-        for(int i = 0; i < len; i++){
-            char ch = arr[i];
-            if(ch == ' ') continue;
-            if(ch >= '0' && ch <= '9') {
-                out+=ch;
-                continue;
-            }
-            if(ch == '(') op.push(ch);
-            if(ch == '+' || ch == '-'){
-                while(!op.empty() && (op.peek() != '(')) 
-                    out+=op.pop();
-                op.push(ch);
-                continue;
-            }
-            if(ch == '*' || ch == '/'){
-                while(!op.empty() && (op.peek() == '*' || op.peek() == '/')) 
-                    out+=op.pop();
-                op.push(ch);
-                continue;
-            }
-            if(ch == ')'){
-                while(!op.empty() && op.peek() != '(') 
-                    out += op.pop();
-                op.pop();
-                continue;
-            }
-        }
-        while(!op.empty()) out += op.pop();
-        return out;
-   }
 	public static void main(String[] args) {
         new Calculator2();
 	}

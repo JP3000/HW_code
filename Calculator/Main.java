@@ -37,7 +37,7 @@ public class Main extends JFrame implements ActionListener{
         calckeysPanel.setLayout(new GridLayout(6,1));
         
         calckeysPanel.add(result);
-        result.setFont(result.getFont().deriveFont((float)(30)));
+        result.setFont(result.getFont().deriveFont((float)(10)));
         Container[] containers = new Container[5];
         for (int i = 0;i < 5;++i){
             containers[i] = new Container();
@@ -119,10 +119,10 @@ class Calculator {
     static Stack<Character> op = new Stack<>();
  
     public static Float getv(char op, Float f1, Float f2){
-        if(op == '+') return f2 + f1;
-        else if(op == '-') return f2 - f1;
-        else if(op  == '*') return f2 * f1;
-        else if(op == '/') return f2 / f1;
+        if(op == '+') return result =  f2 + f1;
+        else if(op == '-') return result = f2 - f1;
+        else if(op  == '*') return result = f2 * f1;
+        else if(op == '/') return result = f2 / f1;
         else return Float.valueOf(-0);
     }
 
