@@ -10,10 +10,11 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 public class Calculator5 extends JFrame implements ActionListener{
-    JFrame f = new JFrame("Calculator");
+    //主框架
+    JFrame f = new JFrame("计算器3000");
     private JTextField text_show = new JTextField("0");
     private JTextField text_history = new JTextField(28);
-	//bmi
+	//bmi标签
 	private static final long serialVersionUID = 1L;
     private JPanel whPanel;
     private JLabel heightLabel;
@@ -24,13 +25,9 @@ public class Calculator5 extends JFrame implements ActionListener{
     private JLabel consoleLabel;
     private JTextField consoleText;
  
-    
     public double weight;
-    
     public double height;
-    
     public double bmi;
- 
     DecimalFormat dformat = new DecimalFormat("#.00");
 
     public JButton  button_Left, button_Right,
@@ -47,7 +44,6 @@ public class Calculator5 extends JFrame implements ActionListener{
 	public boolean reop;
 
     public String expression = "";
-
     public String[] str_history = new String[5];
     int count_H = 0;
     int count_equ = 0;
@@ -62,7 +58,7 @@ public class Calculator5 extends JFrame implements ActionListener{
 		JPanel jpanel3 = new JPanel();
 		JPanel jpanel4 = new JPanel();
 		JPanel jpanel5 = new JPanel();
-        
+        //bmi身高体重界面
 		whPanel = new JPanel();
         whPanel.setLayout(new FlowLayout());
         heightLabel = new JLabel("身高（米/m）：");
@@ -81,16 +77,15 @@ public class Calculator5 extends JFrame implements ActionListener{
         consoleText = new JTextField(28);
         consoleText.setEditable(false);
         consolePanel.add(consoleLabel); consolePanel.add(consoleText);
-
-        submitButton = new JButton("BMI计算");//计算改成等号( = )
-
+        //bmi计算按键
+        submitButton = new JButton("BMI计算");
         //bmi主界面
 		bmi1.setLayout(new FlowLayout());
 		bmi2.setLayout(new FlowLayout());
         
         bmi1.add(whPanel,FlowLayout.LEFT);
         bmi2.add(consolePanel,FlowLayout.LEFT);
-		
+		//按钮主界面
         submitButton = new JButton("BMI计算");
         historyButton = new JButton("history");
         button_Left = new JButton("(");  button_Right = new JButton(")");
@@ -104,6 +99,7 @@ public class Calculator5 extends JFrame implements ActionListener{
         button_0=new JButton("0");      button_dot=new JButton(".");
         button_equal=new JButton("=");  button_plus=new JButton("+");
         
+        //按钮监听
         historyButton.addActionListener(this);
         button_Left.addActionListener(this);
         button_Right.addActionListener(this);
@@ -125,11 +121,11 @@ public class Calculator5 extends JFrame implements ActionListener{
         button_dot.addActionListener(this);
         button_equal.addActionListener(this);
         button_plus.addActionListener(this);
-        
+        //历史和bmi计算功能按钮
         tool.setLayout(new GridLayout(1, 2));
 		tool.add(submitButton);
 		tool.add(historyButton);
-
+        //计算器操作界面
 		jpanel1.setLayout(new GridLayout(1, 4));
 		jpanel1.add(button_Left);
 		jpanel1.add(button_Right);
@@ -159,15 +155,15 @@ public class Calculator5 extends JFrame implements ActionListener{
 		jpanel5.add(button_dot);
 		jpanel5.add(button_equal);
         jpanel5.add(button_plus);
-        
+        //计算结果显示
         text_show.setEditable(false);
         text_show.setHorizontalAlignment(JTextField.RIGHT);
         text_show.setFont(text_show.getFont().deriveFont((float)(30)));
-
+        //历史记录显示
         text_history.setEditable(false);
         text_history.setHorizontalAlignment(JTextField.RIGHT);
         text_history.setFont(text_history.getFont().deriveFont((float)(30)));
-
+        //主容器
         Container container = f.getContentPane();
 		container.setLayout(new GridLayout(10, 1));
         container.add(text_show);
@@ -185,9 +181,9 @@ public class Calculator5 extends JFrame implements ActionListener{
         
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.pack();
-        f.setSize(600,300);
+        f.setSize(600,400);
         f.setVisible(true);
-
+        //bmi计算按钮监听
         submitButton.addActionListener(new ActionListener() {       //设置事件监听器
 
         	public void actionPerformed(ActionEvent e) {            //初始化以及报错
@@ -214,7 +210,7 @@ public class Calculator5 extends JFrame implements ActionListener{
             }
 
         });
-
+        //历史记录按钮监听
         historyButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e)
             {
@@ -226,8 +222,9 @@ public class Calculator5 extends JFrame implements ActionListener{
             }
         });
 
-	}
-	private String getResult (double bmi) {           //分析BMI值大小
+    }
+    //判断bmi值大小,并给出评价
+	private String getResult (double bmi) { 
     
         if(bmi < 18.5){
             return "您偏瘦";
@@ -237,7 +234,7 @@ public class Calculator5 extends JFrame implements ActionListener{
             return "您偏胖";
         }
     }
-
+    //计算器事件方法
     public void actionPerformed(ActionEvent ev) {
         String action = ev.getActionCommand();
         if (action.equals("C")){
@@ -280,7 +277,7 @@ public class Calculator5 extends JFrame implements ActionListener{
         expression = expression + action;
         text_show.setText(expression);
     }
-
+    //计算器计算函数
     public static BigDecimal Calc(String str) {
         // 对表达式进行预处理，并简单验证是否是正确的表达式
         // 存放处理后的表达式
@@ -391,7 +388,7 @@ public class Calculator5 extends JFrame implements ActionListener{
         // 最后，栈中仅有一个元素，就是计算结果
         return newStack.peek();
     }
-
+    //主函数
 	public static void main(String[] args) {
         new Calculator5();
 	}
