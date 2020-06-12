@@ -1,7 +1,11 @@
 public class ex2_2{
     public static void main(String[] args){
         System.out.println(max(20, 5, 22));
+        System.out.println(max(10L, 11L, 9L));
+        System.out.println(max(20.1f , 20.2f, 20.3f));
         System.out.println(min(20, 5, 22));
+        System.out.println(min(10L, 11L, 9L));
+        System.out.println(min(20.1f , 20.2f, 20.3f));
     }
     public static int max(int a, int b, int c){
         int max = (a > b) ? a : b;

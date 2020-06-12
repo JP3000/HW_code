@@ -85,7 +85,7 @@ public class Polymorphism {
      students[1] = new Undergraduate("鲁向东");
 	 students[2] = new Postgraduate("匡晓华");
      students[3] = new Undergraduate("周丽娜");
-     students[4] = new Undergraduate("梁欣欣"); // 代码5 创建姓名为梁欣欣的Postgraduate对象students[4] 
+     students[4] = new Postgraduate("梁欣欣"); // 代码5 创建姓名为梁欣欣的Postgraduate对象students[4] 
 	 for (int i=0; i<5 ;i++) {
 		 students[i].setCourseScore(0,87);
          students[i].setCourseScore(1,90);
@@ -100,6 +100,14 @@ public class Polymorphism {
        System.out.println(students[i].getName( )+"   "
 		                +  students[i].getType( )+"  "
 		                +  students[i].getCourseGrade( ));
-	 }
-  }
+     }
+    
+     for (int i=0;i<5;i++){
+        if(students[i]instanceof Undergraduate)
+            System.out.println(students[i].getName()+" 是本科生 ");
+        else  
+            System.out.println(students[i].getName()+" 是研究生 ");
+     }
+    }
+     
 }
